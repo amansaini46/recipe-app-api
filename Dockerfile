@@ -5,11 +5,6 @@ MAINTAINER Aman Saini
 ENV PYTHONUNBUFFERED 1
 
 RUN apk update
-#RUN apk add --no-cache postgresql-client
-#RUN apk add --no-cache --virtual .tmp-build-deps \
-#        gcc linux-headers postgresql-dev libc-dev
-#        openldap libcurl gpgme-dev && rm -rf /var/cache/apk/*
-#RUN apk del .tmp-build-deps
 
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.txt /tmp/requirements-dev.txt
@@ -22,11 +17,15 @@ ARG DEV=false
 
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
+    apk add --update --no-cache postgresql-client && \
+    apk add --no-cache --virtual .tmp-build-deps \
+        build-base postgresql-dev musl-dev && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ $DEV = "true" ]; \
     then /py/bin/pip install -r  /tmp/requirements-dev.txt ; \
     fi && \
     rm -rf /tmp && \
+    apk del .tmp-build-deps && \
     adduser -D -H appuser
 
 ENV PATH="/py/bin:$PATH"

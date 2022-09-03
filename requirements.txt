@@ -1,4 +1,4 @@
 Django>=4.0.0,<4.2.0
 djangorestframework>=3.13.0,<3.14.0
 flake8>=4.0.0,<4.2.0
-tzdata>=2021.5,<2021.6
+psycopg2~=2.8.0

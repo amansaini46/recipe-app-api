@@ -32,3 +32,5 @@ services:
       - POSTGRES_PASSWORD=Password1
 volumes:
   postgres-db-data:
+networks:
+  recipe-app-api:
